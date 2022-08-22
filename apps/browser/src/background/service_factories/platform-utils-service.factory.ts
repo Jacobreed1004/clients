@@ -1,6 +1,6 @@
 import { PlatformUtilsService } from "@bitwarden/common/abstractions/platformUtils.service";
 
-import BrowserPlatformUtilsService from "src/services/browserPlatformUtils.service";
+import BrowserPlatformUtilsService from "../../services/browserPlatformUtils.service";
 
 import { CachedServices, factory, FactoryOptions } from "./factory-options";
 import { MessagingServiceInitOptions, messagingServiceFactory } from "./messaging-service.factory";
@@ -10,6 +10,7 @@ type PlatformUtilsServiceFactoryOptions = FactoryOptions & {
   platformUtilsServiceOptions: {
     clipboardWriteCallback: (clipboardValue: string, clearMs: number) => Promise<void>;
     biometricCallback: () => Promise<boolean>;
+    win: Window & typeof globalThis;
   };
 };
 
@@ -30,7 +31,8 @@ export function platformUtilsServiceFactory(
         messagingServiceFactory(cache, opts),
         stateServiceFactory(cache, opts),
         opts.platformUtilsServiceOptions.clipboardWriteCallback,
-        opts.platformUtilsServiceOptions.biometricCallback
+        opts.platformUtilsServiceOptions.biometricCallback,
+        opts.platformUtilsServiceOptions.win
       )
   );
 }

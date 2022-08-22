@@ -1,6 +1,7 @@
 import { AbstractStorageService } from "@bitwarden/common/abstractions/storage.service";
 import { MemoryStorageService } from "@bitwarden/common/services/memoryStorage.service";
 
+import { BrowserApi } from "../../browser/browserApi";
 import BrowserLocalStorageService from "../../services/browserLocalStorage.service";
 import { LocalBackedSessionStorageService } from "../../services/localBackedSessionStorage.service";
 
@@ -38,7 +39,7 @@ export function memoryStorageServiceFactory(
   opts: MemoryStorageServiceInitOptions
 ): AbstractStorageService {
   return factory(cache, "memoryStorageService", opts, () => {
-    if (chrome.runtime.getManifest().manifest_version == 3) {
+    if (BrowserApi.manifestVersion == 3) {
       return new LocalBackedSessionStorageService(
         encryptServiceFactory(cache, opts),
         keyGenerationServiceFactory(cache, opts)

@@ -1,6 +1,6 @@
 import { I18nService as AbstractI18nService } from "@bitwarden/common/abstractions/i18n.service";
 
-import I18nService from "src/services/i18n.service";
+import I18nService from "../../services/i18n.service";
 
 import { FactoryOptions, CachedServices, factory } from "./factory-options";
 
