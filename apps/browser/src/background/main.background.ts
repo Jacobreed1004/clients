@@ -181,8 +181,11 @@ export default class MainBackground {
   private syncTimeout: any;
   private isSafari: boolean;
   private nativeMessagingBackground: NativeMessagingBackground;
+  popupOnlyContext: boolean;
 
   constructor(public isPrivateMode: boolean = false) {
+    this.popupOnlyContext = isPrivateMode || BrowserApi.manifestVersion === 3;
+
     // Services
     const lockedCallback = async (userId?: string) => {
       if (BrowserApi.manifestVersion === 3) {
@@ -219,7 +222,7 @@ export default class MainBackground {
       },
     };
 
-    this.messagingService = isPrivateMode
+    this.messagingService = this.popupOnlyContext
       ? new BrowserMessagingPrivateModeBackgroundService()
       : new BrowserMessagingService();
     this.logService = logServiceFactory(services, factoryOptions);
