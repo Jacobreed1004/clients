@@ -11,11 +11,11 @@ export type SettingsServiceInitOptions = SettingsServiceFactoryOptions & StateSe
 export function settingsServiceFactory(
   cache: { settingsService?: AbstractSettingsService } & CachedServices,
   opts: SettingsServiceInitOptions
-): AbstractSettingsService {
+): Promise<AbstractSettingsService> {
   return factory(
     cache,
     "settingsService",
     opts,
-    () => new SettingsService(stateServiceFactory(cache, opts))
+    async () => new SettingsService(await stateServiceFactory(cache, opts))
   );
 }

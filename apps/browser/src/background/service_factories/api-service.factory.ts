@@ -29,17 +29,17 @@ export type ApiServiceInitOptions = ApiServiceFactoryOptions &
 export function apiServiceFactory(
   cache: { apiService?: AbstractApiService } & CachedServices,
   opts: ApiServiceInitOptions
-): AbstractApiService {
+): Promise<AbstractApiService> {
   return factory(
     cache,
     "apiService",
     opts,
-    () =>
+    async () =>
       new ApiService(
-        tokenServiceFactory(cache, opts),
-        platformUtilsServiceFactory(cache, opts),
-        environmentServiceFactory(cache, opts),
-        appIdServiceFactory(cache, opts),
+        await tokenServiceFactory(cache, opts),
+        await platformUtilsServiceFactory(cache, opts),
+        await environmentServiceFactory(cache, opts),
+        await appIdServiceFactory(cache, opts),
         opts.apiServiceOptions.logoutCallback,
         opts.apiServiceOptions.customUserAgent
       )

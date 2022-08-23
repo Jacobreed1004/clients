@@ -42,25 +42,25 @@ export type AuthServiceInitOptions = AuthServiceFactoyOptions &
 export function authServiceFactory(
   cache: { authService?: AbstractAuthService } & CachedServices,
   opts: AuthServiceInitOptions
-): AbstractAuthService {
+): Promise<AbstractAuthService> {
   return factory(
     cache,
     "authService",
     opts,
-    () =>
+    async () =>
       new AuthService(
-        cryptoServiceFactory(cache, opts),
-        apiServiceFactory(cache, opts),
-        tokenServiceFactory(cache, opts),
-        appIdServiceFactory(cache, opts),
-        platformUtilsServiceFactory(cache, opts),
-        messagingServiceFactory(cache, opts),
-        logServiceFactory(cache, opts),
-        keyConnectorServiceFactory(cache, opts),
-        environmentServiceFactory(cache, opts),
-        stateServiceFactory(cache, opts),
-        twoFactorServiceFactory(cache, opts),
-        i18nServiceFactory(cache, opts)
+        await cryptoServiceFactory(cache, opts),
+        await apiServiceFactory(cache, opts),
+        await tokenServiceFactory(cache, opts),
+        await appIdServiceFactory(cache, opts),
+        await platformUtilsServiceFactory(cache, opts),
+        await messagingServiceFactory(cache, opts),
+        await logServiceFactory(cache, opts),
+        await keyConnectorServiceFactory(cache, opts),
+        await environmentServiceFactory(cache, opts),
+        await stateServiceFactory(cache, opts),
+        await twoFactorServiceFactory(cache, opts),
+        await i18nServiceFactory(cache, opts)
       )
   );
 }

@@ -14,18 +14,20 @@ export type TwoFactorServiceInitOptions = TwoFactorServiceFactoryOptions &
   I18nServiceInitOptions &
   PlatformUtilsServiceInitOptions;
 
-export function twoFactorServiceFactory(
+export async function twoFactorServiceFactory(
   cache: { twoFactorService?: AbstractTwoFactorService } & CachedServices,
   opts: TwoFactorServiceInitOptions
-): AbstractTwoFactorService {
-  return factory(
+): Promise<AbstractTwoFactorService> {
+  const service = await factory(
     cache,
     "twoFactorService",
     opts,
-    () =>
+    async () =>
       new TwoFactorService(
-        i18nServiceFactory(cache, opts),
-        platformUtilsServiceFactory(cache, opts)
+        await i18nServiceFactory(cache, opts),
+        await platformUtilsServiceFactory(cache, opts)
       )
   );
+  await service.init();
+  return service;
 }

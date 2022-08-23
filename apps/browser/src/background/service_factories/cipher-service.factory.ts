@@ -32,23 +32,23 @@ export type CipherServiceInitOptions = CipherServiceFactoryOptions &
 export function cipherServiceFactory(
   cache: { cipherService?: AbstractCipherService } & CachedServices,
   opts: CipherServiceInitOptions
-): AbstractCipherService {
+): Promise<AbstractCipherService> {
   return factory(
     cache,
     "cipherService",
     opts,
-    () =>
+    async () =>
       new CipherService(
-        cryptoServiceFactory(cache, opts),
-        settingsServiceFactory(cache, opts),
-        apiServiceFactory(cache, opts),
-        fileUploadServiceFactory(cache, opts),
-        i18nServiceFactory(cache, opts),
+        await cryptoServiceFactory(cache, opts),
+        await settingsServiceFactory(cache, opts),
+        await apiServiceFactory(cache, opts),
+        await fileUploadServiceFactory(cache, opts),
+        await i18nServiceFactory(cache, opts),
         opts.cipherServiceOptions.searchServiceFactory === undefined
           ? () => cache.searchService
           : opts.cipherServiceOptions.searchServiceFactory,
-        logServiceFactory(cache, opts),
-        stateServiceFactory(cache, opts)
+        await logServiceFactory(cache, opts),
+        await stateServiceFactory(cache, opts)
       )
   );
 }

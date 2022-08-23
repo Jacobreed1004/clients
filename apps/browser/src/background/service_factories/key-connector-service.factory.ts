@@ -34,20 +34,20 @@ export type KeyConnectorServiceInitOptions = KeyConnectorServiceFactoryOptions &
 export function keyConnectorServiceFactory(
   cache: { keyConnectorService?: AbstractKeyConnectorService } & CachedServices,
   opts: KeyConnectorServiceInitOptions
-): AbstractKeyConnectorService {
+): Promise<AbstractKeyConnectorService> {
   return factory(
     cache,
     "keyConnectorService",
     opts,
-    () =>
+    async () =>
       new KeyConnectorService(
-        stateServiceFactory(cache, opts),
-        cryptoServiceFactory(cache, opts),
-        apiServiceFactory(cache, opts),
-        tokenServiceFactory(cache, opts),
-        logServiceFactory(cache, opts),
-        organizationServiceFactory(cache, opts),
-        cryptoFunctionServiceFactory(cache, opts),
+        await stateServiceFactory(cache, opts),
+        await cryptoServiceFactory(cache, opts),
+        await apiServiceFactory(cache, opts),
+        await tokenServiceFactory(cache, opts),
+        await logServiceFactory(cache, opts),
+        await organizationServiceFactory(cache, opts),
+        await cryptoFunctionServiceFactory(cache, opts),
         opts.keyConnectorServiceOptions.logoutCallback
       )
   );

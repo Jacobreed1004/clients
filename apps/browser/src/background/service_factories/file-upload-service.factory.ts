@@ -14,11 +14,15 @@ export type FileUploadServiceInitOptions = FileUploadServiceFactoyOptions &
 export function fileUploadServiceFactory(
   cache: { fileUploadService?: AbstractFileUploadService } & CachedServices,
   opts: FileUploadServiceInitOptions
-): AbstractFileUploadService {
+): Promise<AbstractFileUploadService> {
   return factory(
     cache,
     "fileUploadService",
     opts,
-    () => new FileUploadService(logServiceFactory(cache, opts), apiServiceFactory(cache, opts))
+    async () =>
+      new FileUploadService(
+        await logServiceFactory(cache, opts),
+        await apiServiceFactory(cache, opts)
+      )
   );
 }

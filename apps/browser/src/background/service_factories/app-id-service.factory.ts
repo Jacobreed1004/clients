@@ -13,11 +13,11 @@ export type AppIdServiceInitOptions = AppIdServiceFactoryOptions & DiskStorageOp
 export function appIdServiceFactory(
   cache: { appIdService?: AbstractAppIdService } & CachedServices,
   opts: AppIdServiceInitOptions
-): AbstractAppIdService {
+): Promise<AbstractAppIdService> {
   return factory(
     cache,
     "appIdService",
     opts,
-    () => new AppIdService(diskStorageServiceFactory(cache, opts))
+    async () => new AppIdService(await diskStorageServiceFactory(cache, opts))
   );
 }

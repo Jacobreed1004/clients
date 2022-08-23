@@ -26,18 +26,18 @@ export type CryptoServiceInitOptions = CryptoServiceFactoryOptions &
 export function cryptoServiceFactory(
   cache: { cryptoService?: AbstractCryptoService } & CachedServices,
   opts: CryptoServiceInitOptions
-): AbstractCryptoService {
+): Promise<AbstractCryptoService> {
   return factory(
     cache,
     "cryptoService",
     opts,
-    () =>
+    async () =>
       new CryptoService(
-        cryptoFunctionServiceFactory(cache, opts),
-        encryptServiceFactory(cache, opts),
-        platformUtilsServiceFactory(cache, opts),
-        logServiceFactory(cache, opts),
-        stateServiceFactory(cache, opts)
+        await cryptoFunctionServiceFactory(cache, opts),
+        await encryptServiceFactory(cache, opts),
+        await platformUtilsServiceFactory(cache, opts),
+        await logServiceFactory(cache, opts),
+        await stateServiceFactory(cache, opts)
       )
   );
 }
