@@ -1,6 +1,11 @@
 import { Meta, moduleMetadata, Story } from "@storybook/angular";
 
+import { I18nService } from "@bitwarden/common/abstractions/i18n.service";
+
 import { ButtonModule } from "../../button";
+import { IconButtonModule } from "../../icon-button";
+import { SharedModule } from "../../shared/shared.module";
+import { I18nMockService } from "../../utils/i18n-mock.service";
 
 import { DialogComponent } from "./dialog.component";
 
@@ -9,7 +14,17 @@ export default {
   component: DialogComponent,
   decorators: [
     moduleMetadata({
-      imports: [ButtonModule],
+      imports: [ButtonModule, SharedModule, IconButtonModule],
+      providers: [
+        {
+          provide: I18nService,
+          useFactory: () => {
+            return new I18nMockService({
+              close: "Close",
+            });
+          },
+        },
+      ],
     }),
   ],
   args: {
@@ -21,6 +36,9 @@ export default {
       url: "https://www.figma.com/file/Zt3YSeb6E6lebAffrNLa0h/Tailwind-Component-Library",
     },
   },
+  argTypes: {
+    onClose: { action: "onClose" },
+  },
 } as Meta;
 
 const Template: Story<DialogComponent> = (args: DialogComponent) => ({
@@ -29,9 +47,10 @@ const Template: Story<DialogComponent> = (args: DialogComponent) => ({
   <bit-dialog [dialogSize]="dialogSize">
     <span bit-dialog-title>{{title}}</span>
     <span bit-dialog-content>Dialog body text goes here.</span>
-    <div bit-dialog-footer class="tw-flex tw-flex-row tw-gap-2">
+    <div bit-dialog-footer class="tw-flex tw-items-center tw-flex-row tw-gap-2">
       <button bitButton buttonType="primary">Save</button>
       <button bitButton buttonType="secondary">Cancel</button>
+      <button bitIconButton="bwi-trash" buttonType="danger" size="default"></button>
     </div>
   </bit-dialog>
   `,
