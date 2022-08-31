@@ -50,7 +50,7 @@ const Template: Story<DialogComponent> = (args: DialogComponent) => ({
     <div bit-dialog-footer class="tw-flex tw-items-center tw-flex-row tw-gap-2">
       <button bitButton buttonType="primary">Save</button>
       <button bitButton buttonType="secondary">Cancel</button>
-      <button bitIconButton="bwi-trash" buttonType="danger" size="default"></button>
+      <button class="tw-ml-auto" bitIconButton="bwi-trash" buttonType="danger" size="default"></button>
     </div>
   </bit-dialog>
   `,
