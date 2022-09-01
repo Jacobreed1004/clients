@@ -208,6 +208,13 @@ const devServer =
             pathRewrite: { "^/notifications": "" },
             secure: false,
             changeOrigin: true,
+            p,
+          },
+          "/icons": {
+            target: envConfig.dev?.proxyIcons,
+            pathRewrite: { "^/icons": "" },
+            secure: false,
+            changeOrigin: true,
           },
         },
         headers: (req) => {
